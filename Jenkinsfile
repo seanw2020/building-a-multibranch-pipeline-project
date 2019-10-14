@@ -1,18 +1,5 @@
-pipeline {
-    agent any
-    parameters {
-      string(name: 'Greeting', defaultValue: 'Hello', description: 'How should I greet the world?')
-    }
-    stages {
-        stage('Build') {
-            steps {
-                echo "${params.Greeting} World!"
-            }
-        }
-        stage('Test') {
-            steps {
-                echo "test"
-            }
-        }
-    }
+node {
+  checkout scm
+  def dockerfile = 'Dockerfile.test'
+  def customImage = docker.build("my-image:${env.BUILD_ID}", "-f ${dockerfile} ./dockerfiles")
 }
